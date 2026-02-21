@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>App Data Dark Mode</title>
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    background:#121212;
+    color:white;
+}
+.container{
+    background:#1e1e1e;
+    padding:20px;
+    margin:50px auto;
+    width:300px;
+    border-radius:12px;
+    box-shadow:0 0 15px rgba(0,0,0,0.7);
+}
+input{
+    padding:10px;
+    margin:5px;
+    width:90%;
+    border:none;
+    border-radius:6px;
+}
+button{
+    padding:10px;
+    margin:5px;
+    width:95%;
+    border:none;
+    border-radius:6px;
+    background:#6200ea;
+    color:white;
+    cursor:pointer;
+}
+button:hover{
+    background:#7c4dff;
+}I
+.item{
+    background:#2a2a2a;
+    margin:6px;
+    padding:10px;
+    border-radius:8px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Data App</h2>
+
+<input type="text" id="inputData" placeholder="Masukkan data">
+<button onclick="simpan()">Simpan</button>
+
+<h3>Daftar Data</h3>
+<div id="list"></div>
+
+</div>
+
+<script>
+function loadData(){
+    let data = JSON.parse(localStorage.getItem("db")) || [];
+    let list = document.getElementById("list");
+    list.innerHTML="";
+
+    data.forEach((item,index)=>{
+        list.innerHTML += `
+        <div class="item">
+            ${item}
+            <br>
+            <button onclick="hapus(${index})">Hapus</button>
+        </div>`;
+    });
+}
+
+function simpan(){
+    let input = document.getElementById("inputData");
+    let data = JSON.parse(localStorage.getItem("db")) || [];
+
+    if(input.value.trim()=="") return;
+
+    data.push(input.value);
+    localStorage.setItem("db", JSON.stringify(data));
+    input.value="";
+    loadData();
+}
+
+function hapus(index){
+    let data = JSON.parse(localStorage.getItem("db"));
+    data.splice(index,1);
+    localStorage.setItem("db", JSON.stringify(data));
+    loadData();
+}
+
+loadData();
+</script>
+
+</body>
+</html>
